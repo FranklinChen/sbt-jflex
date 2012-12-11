@@ -37,15 +37,15 @@ object SbtJFlexPlugin extends Plugin {
 
   val jflex = config("jflex")
   val generate = TaskKey[Seq[File]]("generate")
-  val antlrDependency = SettingKey[ModuleID]("antlr-dependency")
+  val jflexDependency = SettingKey[ModuleID]("jflex-dependency")
   val toolConfiguration = SettingKey[JFlexToolConfiguration]("jflex-tool-configuration")
-  val pluginConfiguration = SettingKey[PluginConfiguration]("plugin-configuration")
-  val tokensResource = SettingKey[File]("tokens-resource-directory")
+  val pluginConfiguration = SettingKey[PluginConfiguration]("jflex-plugin-configuration")
+  val tokensResource = SettingKey[File]("jflex-tokens-resource-directory")
 
   lazy val jflexSettings: Seq[Project.Setting[_]] = inConfig(jflex)(Seq(
     toolConfiguration := JFlexToolConfiguration(),
     pluginConfiguration := PluginConfiguration(),
-    antlrDependency := "de.jflex" % "jflex" % "1.4.3",
+    jflexDependency := "de.jflex" % "jflex" % "1.4.3",
 
     sourceDirectory <<= (sourceDirectory in Compile) { _ / "flex" },
     javaSource <<= sourceManaged in Compile,
@@ -61,7 +61,7 @@ object SbtJFlexPlugin extends Plugin {
     unmanagedSourceDirectories in Compile <+= (sourceDirectory in jflex),
     sourceGenerators in Compile <+= (generate in jflex),
     cleanFiles <+= (javaSource in jflex),
-    libraryDependencies <+= (antlrDependency in jflex),
+    libraryDependencies <+= (jflexDependency in jflex),
     ivyConfigurations += jflex
   )
 
@@ -82,7 +82,7 @@ object SbtJFlexPlugin extends Plugin {
     // prepare target
     target.mkdirs()
 
-    // configure antlr tool
+    // configure jflex tool
     log.info("JFlex: Using JFlex version %s to generate source files.".format(Main.version))
     Options.dot = tool.dot
     Options.verbose = tool.verbose
@@ -93,7 +93,7 @@ object SbtJFlexPlugin extends Plugin {
     val grammars = (srcDir ** ("*" + options.grammarSuffix)).get
     log.info("JFlex: Generating source files for %d grammars.".format(grammars.size))
 
-    // add each grammar file into the antlr tool's list of grammars to process
+    // add each grammar file into the jflex tool's list of grammars to process
     grammars foreach { g =>
       Main.generate(g)
       log.info("JFlex: Grammar file '%s' detected.".format(g.getPath))
@@ -103,9 +103,9 @@ object SbtJFlexPlugin extends Plugin {
   }
 
   private def printJFlexOptions(log: Logger, options: JFlexToolConfiguration) {
-    log.debug("ANTLR: dump                : " + options.dump)
-    log.debug("ANTLR: dot                 : " + options.dot)
-    log.debug("ANTLR: verbose             : " + options.verbose)
+    log.debug("JFlex: dump                : " + options.dump)
+    log.debug("JFlex: dot                 : " + options.dot)
+    log.debug("JFlex: verbose             : " + options.verbose)
   }
 
 }
