@@ -38,18 +38,18 @@ object SbtJFlexPlugin extends Plugin {
   val jflex = config("jflex")
   val generate = TaskKey[Seq[File]]("generate")
   val jflexDependency = SettingKey[ModuleID]("jflex-dependency")
-  val toolConfiguration = SettingKey[JFlexToolConfiguration]("jflex-tool-configuration")
-  val pluginConfiguration = SettingKey[PluginConfiguration]("jflex-plugin-configuration")
-  val tokensResource = SettingKey[File]("jflex-tokens-resource-directory")
+  val jflexToolConfiguration = SettingKey[JFlexToolConfiguration]("jflex-tool-configuration")
+  val jflexPluginConfiguration = SettingKey[PluginConfiguration]("jflex-plugin-configuration")
+  val jflexTokensResource = SettingKey[File]("jflex-tokens-resource-directory")
 
   lazy val jflexSettings: Seq[Project.Setting[_]] = inConfig(jflex)(Seq(
-    toolConfiguration := JFlexToolConfiguration(),
-    pluginConfiguration := PluginConfiguration(),
+    jflexToolConfiguration := JFlexToolConfiguration(),
+    jflexPluginConfiguration := PluginConfiguration(),
     jflexDependency := "de.jflex" % "jflex" % "1.4.3",
 
     sourceDirectory <<= (sourceDirectory in Compile) { _ / "flex" },
     javaSource <<= sourceManaged in Compile,
-    tokensResource <<= sourceManaged in Compile,
+    jflexTokensResource <<= sourceManaged in Compile,
 
     managedClasspath <<= (classpathTypes in jflex, update) map { (ct, report) =>
       Classpaths.managedJars(jflex, ct, report)
@@ -67,7 +67,7 @@ object SbtJFlexPlugin extends Plugin {
 
 
   private def sourceGeneratorTask = (streams, sourceDirectory in jflex, javaSource in jflex,
-    toolConfiguration in jflex, pluginConfiguration in jflex, cacheDirectory) map {
+    jflexToolConfiguration in jflex, jflexPluginConfiguration in jflex, cacheDirectory) map {
       (out, srcDir, targetDir, tool, options, cache) =>
         val cachedCompile = FileFunction.cached(cache / "flex", inStyle = FilesInfo.lastModified, outStyle = FilesInfo.exists) { (in: Set[File]) =>
           generateWithJFlex(srcDir, targetDir, tool, options, out.log)
