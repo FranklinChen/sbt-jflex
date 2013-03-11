@@ -4,7 +4,7 @@ name := "sbt-jflex"
 
 organization := "de.sciss"
 
-version := "0.3.0-SNAPSHOT"
+version := "0.3.0"
 
 scalaVersion := "2.9.2"
 
@@ -52,3 +52,14 @@ pomExtra <<= name { n =>
    </developer>
 </developers>
 }
+
+// ---- ls.implicit.ly ----
+
+seq( lsSettings :_* )
+
+(LsKeys.tags in LsKeys.lsync) := Seq("sbt", "plugin", "jflex", "lexer" )
+
+(LsKeys.ghUser in LsKeys.lsync) := Some("Sciss")
+
+(LsKeys.ghRepo in LsKeys.lsync) <<= name(Some(_))
+

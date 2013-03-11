@@ -10,7 +10,7 @@ This project is (C)opyright 2011 Steffen Fritzsche and (C)opyright 2013 Hanns Ho
 
 Add a dependency to the plugin in `./project/plugins.sbt`:
 
-    addSbtPlugin("de.sciss" % "sbt-jflex" % "0.3.0-SNAPSHOT")
+    addSbtPlugin("de.sciss" % "sbt-jflex" % "0.3.0")
 
 Place your JFlex grammar files in `src/main/jflex` and they will be included in your next build. Note, `sbt-jflex` generates the source code only once as long as your grammar file didn't change it does not re-generate the java source files.
 
