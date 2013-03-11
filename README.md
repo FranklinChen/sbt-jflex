@@ -1,47 +1,19 @@
 # sbt-jflex
 
-A plugin for sbt-0.11.x that generates code based on an jflex specification.
+A plugin for sbt 0.12 that generates code based on a [JFlex](http://jflex.de/) specification.
 
-This is a shameless fork-and-adapt of stefri's sbt-antlr plugin.
+It is based on the [sbt-antlr plugin](https://github.com/stefri/sbt-antlr/).
 
+This project is (C)opyright 2011 Steffen Fritzsche and (C)opyright 2013 Hanns Holger Rutz, and published under the [Apache 2.0 License](https://raw.github.com/Sciss/sbt-jflex/master/LICENSE).
 
 ## Usage
 
-TODO
+Add a dependency to the plugin in `./project/plugins.sbt`:
 
-Depend on the plugin: `./project/plugins/build.sbt`
+    addSbtPlugin("de.sciss" % "sbt-jflex" % "0.3.0-SNAPSHOT")
 
-    resolvers += "stefri" at "http://stefri.github.com/repo/snapshots"
+Place your JFlex grammar files in `src/main/jflex` and they will be included in your next build. Note, `sbt-jflex` generates the source code only once as long as your grammar file didn't change it does not re-generate the java source files.
 
-    addSbtPlugin("com.github.stefri" % "sbt-antlr" % "0.2-SNAPSHOT")
+Include the following line in `build.sbt` to import the JFlex plugin settings:
 
-Place your ANTLR3 grammar files in `src/main/antlr3` and they will be
-included in your next build. Note, `sbt-antlr` generates the source code
-only once as long as your grammar file didn't change it does not
-re-generate the java source files.
-
-
-## Include Plugin Settings
-
-Include the settings from `sbtjflex.SbtJFlexPlugin.antlrSettings` in
-your project build file. See the [SBT wiki page on plugins][1] for
-further details.
-
-
-## Problems and Feature Requests
-
-Please use the issue tracker on github if you find a bug or want to
-request a specific feature. Note, this plugin is in early alpha, there
-are still lots of things todo - feel free to fork and send a pull
-request to improve the codebase.
-
-
-## License
-
-`sbt-jflex` is licensed under the [Apache 2.0 License][2],
-see the `LICENSE.md` file for further details.
-
-
-## Credits
-
-This is a shameless fork-and-adapt of stefri's sbt-antlr plugin.
+    seq(jflexSettings: _*)
