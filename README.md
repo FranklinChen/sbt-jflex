@@ -1,6 +1,6 @@
 # sbt-jflex
 
-A plugin for sbt 0.12 that generates code based on a [JFlex](http://jflex.de/) specification.
+A plugin for sbt 0.13 that generates code based on a [JFlex](http://jflex.de/) specification.
 
 It is based on the [sbt-antlr plugin](https://github.com/stefri/sbt-antlr/).
 
